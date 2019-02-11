@@ -212,7 +212,7 @@ protected void login() {
 		User usu = userManagement.getUser(user2);
 		
 		if (usu != null) {
-			JOptionPane.showMessageDialog(contentPane, "Welcome!!");
+			//JOptionPane.showMessageDialog(contentPane, "Welcome!!");
 			
 			
 			DouglasCarRentalMain welcome = new DouglasCarRentalMain();
