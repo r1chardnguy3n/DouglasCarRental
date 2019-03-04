@@ -213,12 +213,14 @@ protected void login() {
 		
 		if (usu != null) {
 			//JOptionPane.showMessageDialog(contentPane, "Welcome!!");
+
 			
-			
-			DouglasCarRentalMain welcome = new DouglasCarRentalMain();
-			welcome.setVisible(true);
-			welcome.setExtendedState( welcome.getExtendedState()|JFrame.MAXIMIZED_BOTH );
-			frmDouglas.dispose();
+			DouglasCarRentalMain welcome = new DouglasCarRentalMain("127.0.0.1");
+			welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			//welcome.setVisible(true);
+			//welcome.setExtendedState( welcome.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+			welcome.startRunning();
+			//frmDouglas.dispose();
 			
 			
 		} else {
