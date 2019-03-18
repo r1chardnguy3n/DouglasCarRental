@@ -1,3 +1,4 @@
+package com.DouglasCarRental.Entity;
 
 public class Vehicle {
 

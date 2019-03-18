@@ -1,3 +1,4 @@
+package com.DouglasCarRental.Boundary;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -16,8 +17,10 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
-import com.toedter.calendar.JDateChooser;
 
+import com.DouglasCarRental.Control.UserManagement;
+import com.DouglasCarRental.Entity.User;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.JPasswordField;
 

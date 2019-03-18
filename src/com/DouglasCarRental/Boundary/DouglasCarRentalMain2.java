@@ -1,9 +1,13 @@
+package com.DouglasCarRental.Boundary;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,17 +38,21 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import com.DouglasCarRental.Entity.Reservation;
+import com.DouglasCarRental.Entity.Vehicle;
 import com.mysql.jdbc.ResultSet;
 import com.toedter.calendar.JDateChooser;
 
 import Utils.MySQLConexion;
 
 import java.awt.Checkbox;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 
 public class DouglasCarRentalMain2 extends JFrame {
 
@@ -230,6 +238,61 @@ public class DouglasCarRentalMain2 extends JFrame {
 
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("User Information", null, panel_1, null);
+		
+		JPanel panel_2 = new JPanel();
+		tabbedPane.addTab("Api       ", null, panel_2, null);
+		panel_2.setLayout(null);
+		
+		//Api Tab
+		
+		JLabel lblApiconnection = new JLabel("ApiConnection");
+		lblApiconnection.setBounds(55, 11, 96, 31);
+		panel_2.add(lblApiconnection);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(65, 59, 405, 53);
+		panel_2.add(scrollPane_2);
+		
+		JTextArea txtrJsonstring = new JTextArea();
+		txtrJsonstring.setText("JsonString");
+		scrollPane_2.setViewportView(txtrJsonstring);
+		
+		JButton btnConnectToApi = new JButton("Connect to Api");
+		btnConnectToApi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					URL url = new URL("http://localhost:61809/api/Vehicle");
+		            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		            conn.setRequestMethod("GET");
+		            conn.setRequestProperty("Accept", "application/json");
+		            if (conn.getResponseCode() != 200) {
+		                throw new RuntimeException("Failed : HTTP Error code : "
+		                        + conn.getResponseCode());
+		                
+		            }
+		            lblApiconnection.setText("Connected to api");
+		            lblApiconnection.setForeground(Color.GREEN);
+		            
+		            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+		            BufferedReader br = new BufferedReader(in);
+		            String output;
+		            
+		            while((output = br.readLine()) != null) {
+		            	txtrJsonstring.setText(output);
+		            }
+		            conn.disconnect();
+				}catch(Exception d) {
+					
+				}
+			}
+		});
+		btnConnectToApi.setBounds(64, 174, 144, 23);
+		panel_2.add(btnConnectToApi);
+		
+		
+		
+		
+		//End of APi Tab
 
 		JLabel lblDoulasCarRental = new JLabel("DOULAS CAR RENTAL");
 		lblDoulasCarRental.setBounds(416, 10, 325, 37);
