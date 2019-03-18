@@ -249,9 +249,9 @@ public class DouglasCarRentalMain2 extends JFrame {
 							.getConnection("jdbc:mysql://localhost:3306/douglasreservations", "root", "");
 
 					String query = "INSERT INTO reservations (make,model,year,type,cusName,cusPhone,startDate,endDate,totalPrice,extraDriver,unlimitedKms,insurance,price,cusId) values('"
-							+ getMake + "','" + getModel + "','" + getYear + "','" + getType + "','" + "Fred" + "','"
-							+ "7786541211" + "','" + startDate + "','" + endDate + "','" + totalRent + "','"
-							+ totalAddDriver + "','" + totalkms + "','" + totalIns + "','" + dailyRate + "','" + 10
+							+ getMake + "','" + getModel + "','" + getYear + "','" + getType + "','" + userName + "','"
+							+ usEmail + "','" + startDate + "','" + endDate + "','" + totalRent + "','"
+							+ totalAddDriver + "','" + totalkms + "','" + totalIns + "','" + dailyRate + "','" + usId
 							+ "')";
 
 					Statement stmt = conexion.createStatement();
@@ -269,7 +269,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 				reservations = new ArrayList<>();
 
 				System.out.println(getMake + " " + getModel + " " + getYear + " " + getType + " " + dailyRate + " "
-						+ totalIns + " " + 10 + " " + "Fred" + " " + "Flnstone" + " " + startDate + " " + endDate + " "
+						+ totalIns + " " + usId + " " + userName + " " + usEmail + " " + startDate + " " + endDate + " "
 						+ totalkms + " " + totalAddDriver + " " + totalRent);
 
 				Reservation reservation = new Reservation(getMake, getModel, getYear, getType, dailyRate, totalIns,
