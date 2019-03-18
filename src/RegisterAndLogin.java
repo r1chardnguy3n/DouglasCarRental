@@ -32,6 +32,8 @@ public class RegisterAndLogin {
 	private JTextField textEmailLog;
 	private JPasswordField textPassLogin;
 	private JDateChooser textDOB;
+	String email;
+	private String password;
 
 	/**
 	 * Launch the application.
@@ -42,6 +44,9 @@ public class RegisterAndLogin {
 				try {
 					RegisterAndLogin window = new RegisterAndLogin();
 					window.frmDouglas.setVisible(true);
+										
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -200,8 +205,8 @@ public class RegisterAndLogin {
 	
 protected void login() {
 		
-		String email = textEmailLog.getText();
-		String password = String.valueOf(textPassLogin.getPassword());
+		email = textEmailLog.getText();
+		password = String.valueOf(textPassLogin.getPassword());
 		
 		UserManagement userManagement = new UserManagement();
 		
@@ -215,18 +220,19 @@ protected void login() {
 			//JOptionPane.showMessageDialog(contentPane, "Welcome!!");
 
 			
-			DouglasCarRentalMain welcome = new DouglasCarRentalMain("127.0.0.1");
+			DouglasCarRentalMain2 welcome = new DouglasCarRentalMain2();
 			welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			//welcome.setVisible(true);
+			welcome.setVisible(true);
 			//welcome.setExtendedState( welcome.getExtendedState()|JFrame.MAXIMIZED_BOTH );
-			welcome.startRunning();
-			//frmDouglas.dispose();
+			frmDouglas.dispose();
 			
 			
 		} else {
 			JOptionPane.showMessageDialog(contentPane, "Invalid Data", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
+		DouglasCarRentalMain2 sendEmail = new DouglasCarRentalMain2();
+		sendEmail.printEmail(email);
 		
 	}
 
@@ -245,7 +251,7 @@ protected void register(){
 			 String email = textEmail.getText();
 			 String password = String.valueOf(textPass.getPassword());
 			 
-			 String query = "INSERT INTO users (name,lastname,bithdate,email,password) values('"+name+"','"+lastname+"','"+birthday+"','"+email+"','"+password+"')";
+			String query = "INSERT INTO users (name,lastname,bithdate,email,password) values('" + name + "','"+lastname+"','"+birthday+"','"+email+"','"+password+"')";
 			 
 			 Statement stmt = conexion.createStatement();
 			 
@@ -258,5 +264,7 @@ protected void register(){
 		e.printStackTrace();
 	}
 }
+
+
 
 }
