@@ -45,6 +45,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 
 public class DouglasCarRentalMain2 extends JFrame {
 
@@ -52,15 +54,24 @@ public class DouglasCarRentalMain2 extends JFrame {
 	private JTable vehiclesTable;
 	private static List<Vehicle> vehicles;
 	private List<Reservation> reservations;
+	private static List<Reservation> reservations2;
 	private String idx = null, makex = null, modelx = null, yearx = null, typex = null, pricex = null;
 	private String getMake, getModel, getYear, getType, getPrice;
 	private String selectedIns, startDate, endDate;
 	private static String usName, usLname, usBday, usEmail, usPass;
+	private static int resId;
+	private static String resMake, resModel, resYear, resType, resOut, resIn, resTotalPrice;
 	private static int usId;
 	private static String email;
-	private double totalPrice, taxes;
+	private static String changeEmail, changePass, changePass2;
+	private static double totalPrice, taxes, resTotPrice;
 	private int insPrice, diff, dailyRate, totalBeforeTaxes, totalRent, totalIns, totalkms, totalAddDriver, kmsPrice,
 			addDriverPrice;
+	private JTable userJtable;
+	private JTextField changeEmailTf;
+	private JPasswordField changePasswordTf;
+	private JPasswordField changePasswordTf2;
+	private String getReservationId;
 
 	/**
 	 * Launch the application.
@@ -230,6 +241,220 @@ public class DouglasCarRentalMain2 extends JFrame {
 
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("User Information", null, panel_1, null);
+		panel_1.setLayout(null);
+
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(10, 378, 813, 218);
+		panel_1.add(scrollPane_3);
+
+		userJtable = new JTable();
+		userJtable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				//TODO INSERT THE LOGIC TO SELECT THE ROW OF THE RESERVATION TO DELETE
+				
+				try {
+
+					int row = userJtable.getSelectedRow();
+					getReservationId = (userJtable.getModel().getValueAt(row, 0).toString());
+
+					System.out.println(getReservationId);
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+
+				
+			}
+		});
+		scrollPane_3.setViewportView(userJtable);
+
+		JButton btnLoadInformation = new JButton("LOAD INFORMATION");
+		btnLoadInformation.setFont(new Font("Tahoma", Font.BOLD, 11));
+
+		btnLoadInformation.setBounds(31, 266, 181, 23);
+		panel_1.add(btnLoadInformation);
+
+		JLabel lblName = new JLabel("NAME:");
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblName.setBounds(31, 91, 46, 14);
+		panel_1.add(lblName);
+
+		JLabel lblBirthday = new JLabel("BIRTHDAY:");
+		lblBirthday.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblBirthday.setBounds(31, 128, 76, 14);
+		panel_1.add(lblBirthday);
+
+		JLabel lblEmial = new JLabel("EMAIL:");
+		lblEmial.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblEmial.setBounds(31, 162, 76, 14);
+		panel_1.add(lblEmial);
+
+		JLabel userNameLbl = new JLabel("");
+		userNameLbl.setBounds(117, 91, 234, 14);
+		panel_1.add(userNameLbl);
+
+		JLabel userBdatLbl = new JLabel("");
+		userBdatLbl.setBounds(117, 128, 234, 14);
+		panel_1.add(userBdatLbl);
+
+		JLabel userEmailLbl = new JLabel("");
+		userEmailLbl.setBounds(117, 162, 234, 14);
+		panel_1.add(userEmailLbl);
+
+		JLabel userPaswordLbl = new JLabel("");
+		userPaswordLbl.setBounds(117, 201, 234, 14);
+		panel_1.add(userPaswordLbl);
+
+		JLabel lblPersonalInformation = new JLabel("PERSONAL INFORMATION");
+		lblPersonalInformation.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblPersonalInformation.setBounds(85, 40, 295, 14);
+		panel_1.add(lblPersonalInformation);
+
+		JLabel lblChangePassword = new JLabel("CHANGE PASSWORD:");
+		lblChangePassword.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblChangePassword.setBounds(398, 201, 166, 14);
+		panel_1.add(lblChangePassword);
+
+		JButton changePasswordBtn = new JButton("CHANGE PASSWORD");
+		changePasswordBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				getUserInfo();
+				changePass = String.valueOf(changePasswordTf.getPassword());
+				changePass2 = String.valueOf(changePasswordTf2.getPassword());
+
+				if (changePass.equals("") || changePass2.equals("")) {
+					JOptionPane.showMessageDialog(null, "The boxes are empty!");
+				} else {
+					if (changePass.equals(changePass2)) {
+						
+						try {
+							Class.forName("com.mysql.jdbc.Driver");
+							java.sql.Connection conexion2 = DriverManager
+									.getConnection("jdbc:mysql://localhost:3306/douglascarrental", "root", "");
+
+							String query2 = "UPDATE users SET password='" + changePass + "' WHERE id='" + usId + "'";
+							Statement stmt1 = conexion2.createStatement();
+							stmt1.executeUpdate(query2);
+
+							JOptionPane.showMessageDialog(null, "Password change successfully!");
+
+						} catch (Exception e1) {
+							JOptionPane.showMessageDialog(null, "Unsuccessful password change!");
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "The entered passwords are not equal!");
+					}
+				}
+
+			}
+		});
+		changePasswordBtn.setBounds(526, 266, 166, 23);
+		panel_1.add(changePasswordBtn);
+
+		JLabel lblEnterTheNew = new JLabel("ENTER THE \r\nNEW PASSWORD");
+		lblEnterTheNew.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblEnterTheNew.setBounds(702, 197, 147, 23);
+		panel_1.add(lblEnterTheNew);
+
+		JLabel lblConfirmNewPassword = new JLabel("CONFIRM NEW PASSWORD");
+		lblConfirmNewPassword.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblConfirmNewPassword.setBounds(702, 233, 147, 23);
+		panel_1.add(lblConfirmNewPassword);
+
+		JLabel lblChangeEmail = new JLabel("CHANGE EMAIL:");
+		lblChangeEmail.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblChangeEmail.setBounds(398, 95, 166, 14);
+		panel_1.add(lblChangeEmail);
+
+		changeEmailTf = new JTextField();
+		changeEmailTf.setColumns(10);
+		changeEmailTf.setBounds(526, 92, 166, 20);
+		panel_1.add(changeEmailTf);
+
+		JLabel lblEnterTheNew_1 = new JLabel("ENTER THE NEW EMAIL");
+		lblEnterTheNew_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblEnterTheNew_1.setBounds(702, 91, 147, 23);
+		panel_1.add(lblEnterTheNew_1);
+
+		JButton ChangeEmailBtn = new JButton("CHANGE EMAIL");
+		ChangeEmailBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				getUserInfo();
+				changeEmail = changeEmailTf.getText().toString();
+
+				if (changeEmail.equals("")) {
+					JOptionPane.showMessageDialog(null, "Insert an Email");
+				} else {
+
+					try {
+						Class.forName("com.mysql.jdbc.Driver");
+						java.sql.Connection conexion2 = DriverManager
+								.getConnection("jdbc:mysql://localhost:3306/douglascarrental", "root", "");
+
+						String query2 = "UPDATE users SET email='" + changeEmail + "' WHERE id='" + usId + "'";
+						Statement stmt1 = conexion2.createStatement();
+						stmt1.executeUpdate(query2);
+
+						JOptionPane.showMessageDialog(null, "Email change successfully!");
+
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "Unsuccessful email change!");
+					}
+
+				}
+
+			}
+		});
+		ChangeEmailBtn.setBounds(526, 123, 166, 23);
+		panel_1.add(ChangeEmailBtn);
+
+		JLabel lblChangePersonalInformation = new JLabel("CHANGE PERSONAL INFORMATION");
+		lblChangePersonalInformation.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblChangePersonalInformation.setBounds(477, 40, 295, 14);
+		panel_1.add(lblChangePersonalInformation);
+		
+		changePasswordTf = new JPasswordField();
+		changePasswordTf.setBounds(526, 198, 166, 20);
+		panel_1.add(changePasswordTf);
+		
+		changePasswordTf2 = new JPasswordField();
+		changePasswordTf2.setBounds(526, 234, 166, 20);
+		panel_1.add(changePasswordTf2);
+		
+		JButton deleteReservationBtn = new JButton("DELETE RESERVATION");
+		deleteReservationBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					java.sql.Connection conexion2 = DriverManager
+							.getConnection("jdbc:mysql://localhost:3306/douglasreservations", "root", "");
+
+					String query2 = "DELETE FROM reservations WHERE resnum ='" + Integer.parseInt(getReservationId) + "'";
+					Statement stmt1 = conexion2.createStatement();
+					stmt1.executeUpdate(query2);
+
+					JOptionPane.showMessageDialog(null, "Reservation deleted successfully!");
+
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Problems while deleting the reservation. Try again!");
+				}
+				
+			}
+		});
+		deleteReservationBtn.setBounds(854, 474, 166, 23);
+		panel_1.add(deleteReservationBtn);
+		
+		JLabel lblReservations = new JLabel("RESERVATIONS");
+		lblReservations.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblReservations.setBounds(10, 353, 295, 14);
+		panel_1.add(lblReservations);
 
 		JLabel lblDoulasCarRental = new JLabel("DOULAS CAR RENTAL");
 		lblDoulasCarRental.setBounds(416, 10, 325, 37);
@@ -250,15 +475,14 @@ public class DouglasCarRentalMain2 extends JFrame {
 
 					String query = "INSERT INTO reservations (make,model,year,type,cusName,cusPhone,startDate,endDate,totalPrice,extraDriver,unlimitedKms,insurance,price,cusId) values('"
 							+ getMake + "','" + getModel + "','" + getYear + "','" + getType + "','" + userName + "','"
-							+ usEmail + "','" + startDate + "','" + endDate + "','" + totalRent + "','"
-							+ totalAddDriver + "','" + totalkms + "','" + totalIns + "','" + dailyRate + "','" + usId
-							+ "')";
+							+ usEmail + "','" + startDate + "','" + endDate + "','" + totalRent + "','" + totalAddDriver
+							+ "','" + totalkms + "','" + totalIns + "','" + dailyRate + "','" + usId + "')";
 
 					Statement stmt = conexion.createStatement();
 
 					stmt.executeUpdate(query);
 
-					//TODO add the reservation information to the MessageDialog
+					// TODO add the reservation information to the MessageDialog
 					JOptionPane.showMessageDialog(null, "reservation created successfully!");
 
 				} catch (Exception e1) {
@@ -395,7 +619,6 @@ public class DouglasCarRentalMain2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				getUserInfo();
-
 				readList();
 				// System.out.println("confirm: "+email);
 
@@ -427,6 +650,36 @@ public class DouglasCarRentalMain2 extends JFrame {
 				}
 
 				vehiclesTable.setModel(DTM);
+
+			}
+		});
+
+		btnLoadInformation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				getUserInfo();
+				getUserReservations();
+
+				userNameLbl.setText(usName.toUpperCase() + " " + usLname.toUpperCase());
+				userBdatLbl.setText(usBday.toUpperCase());
+				userEmailLbl.setText(usEmail);
+				// userPaswordLbl.setText();
+
+				// DefaultListModel listmodel;
+				// listmodel = new DefaultListModel();
+				//
+				// listmodel.addElement("Name: " + usName + " " + usLname);
+				// listmodel.addElement("Id: " + usId);
+				// listmodel.addElement("Email: " + usEmail);
+				// listmodel.addElement("Password: " + usPass);
+				//
+				// userinfoJlist.setModel(listmodel);
+
+				// ----CREATE TABLE
+
+				DefaultTableModel DTM;
+				DTM = getUserReservations();
+				userJtable.setModel(DTM);
 
 			}
 		});
@@ -514,5 +767,87 @@ public class DouglasCarRentalMain2 extends JFrame {
 
 		}
 	}
+
+	private static DefaultTableModel getUserReservations() {
+
+		String col[] = { "RESERVATION ID", "VEHICLE", "TYPE", "CHECK OUT DATE", "CHECK IN DATE", "TOTAL PRICE" };
+
+		DefaultTableModel DTM = new DefaultTableModel(col, 0);
+
+		try {
+
+			Class.forName("com.mysql.jdbc.Driver");
+			java.sql.Connection conexion = DriverManager
+					.getConnection("jdbc:mysql://localhost:3306/douglasreservations", "root", "");
+
+			// String sql = "SELECT * FROM users";
+			String sql = "SELECT * FROM reservations WHERE cusId = '" + usId + "'";
+
+			Statement st = conexion.createStatement();
+
+			ResultSet rs = (ResultSet) st.executeQuery(sql);
+
+			while (rs.next()) {
+				resId = rs.getInt("resnum");
+				resMake = rs.getString("make");
+				resModel = rs.getString("model");
+				resYear = rs.getString("year");
+				resType = rs.getString("type");
+				resOut = rs.getString("startDate");
+				resIn = rs.getString("endDate");
+				resTotalPrice = rs.getString("totalPrice");
+
+				// print the results
+				System.out.format("%s, %s, %s, %s, %s, %s, %s, %s\n", resId, resMake, resModel, resYear, resType,
+						resOut, resIn, resTotalPrice);
+				setUserReservationsIntoArray();
+
+				// -- CREATE TABLE
+
+				JTable table = new JTable(DTM);
+
+				for (int i = 0; i < reservations2.size(); i++) {
+
+					int id = reservations2.get(i).resid;
+					String make = reservations2.get(i).make;
+					String model = reservations2.get(i).model;
+					String year = reservations2.get(i).year;
+					String type = reservations2.get(i).type;
+					String outDate = reservations2.get(i).startDate;
+					String inDate = reservations2.get(i).endDate;
+					double price = reservations2.get(i).totalPrice;
+
+					Object[] data = { id, make + " " + model + " " + year, type, outDate, inDate, "$" + price };
+
+					DTM.addRow(data);
+
+				}
+
+			}
+			st.close();
+
+		} catch (Exception e) {
+			System.out.println("Error>> Getting User");
+			System.err.println(e.getMessage());
+
+		}
+
+		return DTM;
+
+	}
+
+	private static void setUserReservationsIntoArray() {
+		reservations2 = new ArrayList<>();
+
+		resTotPrice = Double.parseDouble(resTotalPrice);
+
+		Reservation reservation = new Reservation(resId, resMake, resModel, resYear, resType, resOut, resIn,
+				resTotPrice);
+		reservations2.add(reservation);
+
+		for (Reservation b : reservations2) {
+			System.out.println(b);
+		}
+
+	}
 }
-// String query = "SELECT * FROM `users` WHERE `email`='"+email+"'";

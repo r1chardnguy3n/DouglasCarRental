@@ -8,6 +8,7 @@ public class Reservation {
 	int insurance;
 	int price;
 	int cusId;
+	int resid;
 	
 
 	public Reservation(){
@@ -31,6 +32,20 @@ public class Reservation {
 		this.endDate = endDate;
 		this.unlimitedKms = unlimitedKms;
 		this.extraDriver = extraDriver;
+		this.totalPrice = totalPrice;
+	}
+	
+
+	public Reservation(int resId, String make, String model, String year, String type, String startDate, String endDate,
+			double totalPrice) {
+		super();
+		this.resid = resId;
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.type = type;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.totalPrice = totalPrice;
 	}
 
@@ -145,6 +160,15 @@ public class Reservation {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+	
+
+	public int getResid() {
+		return resid;
+	}
+
+	public void setResid(int resid) {
+		this.resid = resid;
+	}
 
 	@Override
 	public String toString() {
@@ -153,6 +177,8 @@ public class Reservation {
 				+ cusPhone + ", startDate=" + startDate + ", endDate=" + endDate + ", unlimitedKms=" + unlimitedKms
 				+ ", extraDriver=" + extraDriver + ", totalPrice=" + totalPrice + "]";
 	}
+	
+	
 
 
 }
