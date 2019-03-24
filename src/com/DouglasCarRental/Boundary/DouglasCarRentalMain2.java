@@ -267,9 +267,9 @@ public class DouglasCarRentalMain2 extends JFrame {
 		            conn.setRequestProperty("Accept", "application/json");
 		            if (conn.getResponseCode() != 200) {
 		                throw new RuntimeException("Failed : HTTP Error code : "
-		                        + conn.getResponseCode());
-		                
+		                        + conn.getResponseCode());		              
 		            }
+		            
 		            lblApiconnection.setText("Connected to api");
 		            lblApiconnection.setForeground(Color.GREEN);
 		            
@@ -288,8 +288,6 @@ public class DouglasCarRentalMain2 extends JFrame {
 		});
 		btnConnectToApi.setBounds(64, 174, 144, 23);
 		panel_2.add(btnConnectToApi);
-		
-		
 		
 		
 		//End of APi Tab
