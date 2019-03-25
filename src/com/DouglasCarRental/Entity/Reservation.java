@@ -1,14 +1,15 @@
+package com.DouglasCarRental.Entity;
 
 public class Reservation {
 
 	public String make, model, year, type, cusName, cusPhone, startDate, endDate;
-	double totalPrice;
-	int extraDriver;
-	int unlimitedKms;
-	int insurance;
-	int price;
-	int cusId;
-	int resid;
+	public double totalPrice;
+	public int extraDriver;
+	public int unlimitedKms;
+	public int insurance;
+	public int price;
+	public int cusId;
+	public int resid;
 	
 
 	public Reservation(){

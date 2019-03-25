@@ -1,3 +1,4 @@
+package com.DouglasCarRental.Boundary;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
@@ -34,6 +35,9 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import com.DouglasCarRental.Entity.Reservation;
+import com.DouglasCarRental.Entity.Vehicle;
+import com.DouglasCarRental.Entity.User;
 import com.mysql.jdbc.ResultSet;
 import com.toedter.calendar.JDateChooser;
 
