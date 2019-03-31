@@ -19,7 +19,8 @@ import com.DouglasCarRental.Entity.Vehicle;
 public class ServiceConnector {
 	
 	String jsonArrayString;
-	ArrayList<Vehicle> vehicleList;
+	public static ArrayList<Vehicle> vehicleList;
+	public static ArrayList<Vehicle> vehicleList2;
 	
 	public void serviceStart() {
 		
@@ -28,7 +29,7 @@ public class ServiceConnector {
 		try {
 			
 			//Connecting to service
-			URL url = new URL("http://localhost:8080/WebService/vehicle.jsp");
+			URL url = new URL("http://localhost:8080/WebServiceDou/vehicle.jsp");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -68,7 +69,7 @@ public class ServiceConnector {
             }
             
 
-            //System.out.println(arrays.get(0));
+          
             
 
             conn.disconnect();
@@ -79,7 +80,7 @@ public class ServiceConnector {
 		
 	}//End of method
 	
-	public ArrayList<Vehicle> getVehicleList(){
+	public static ArrayList<Vehicle> getVehicleList(){
 		return vehicleList;
 	}
 	
@@ -95,14 +96,20 @@ public class ServiceConnector {
 		
 		//Test Vehicle Object
 		
+		vehicleList2 = getVehicleList();
+		
+		for (Vehicle b : vehicleList2) {
+   		 System.out.println(b);
+   		 }
+		int x =1;
 		//Getting objects at index
-		System.out.println(sc.getVehicleList().get(1));
+		//System.out.println(sc.getVehicleList().get(1));
 		
 		//if you want to get make of a certain index
-		System.out.println(sc.getVehicleList().get(5).getMake());
+		//System.out.println(sc.getVehicleList().get(5).getMake());
 		
 		//if you want to get type at index 2
-		System.out.println(sc.getVehicleList().get(2).getType());
+		//System.out.println(sc.getVehicleList().get(2).getType());
 	}
 	
 	

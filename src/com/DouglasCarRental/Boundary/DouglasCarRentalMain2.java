@@ -1,10 +1,14 @@
 package com.DouglasCarRental.Boundary;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +29,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
@@ -35,6 +43,7 @@ import java.awt.Font;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import com.DouglasCarRental.Control.ServiceConnector;
 import com.DouglasCarRental.Entity.Reservation;
 import com.DouglasCarRental.Entity.Vehicle;
 import com.DouglasCarRental.Entity.User;
@@ -76,6 +85,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 	private JPasswordField changePasswordTf;
 	private JPasswordField changePasswordTf2;
 	private String getReservationId;
+	private static String jsonArrayString;
 
 	/**
 	 * Launch the application.
@@ -134,7 +144,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 					getType = (vehiclesTable.getModel().getValueAt(row, 3).toString());
 					getPrice = (vehiclesTable.getModel().getValueAt(row, 4).toString());
 
-					System.out.println(getMake + " " + getModel + " " + getYear + " " + getType + " " + getPrice);
+					//System.out.println(getMake + " " + getModel + " " + getYear + " " + getType + " " + getPrice);
 
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -151,6 +161,8 @@ public class DouglasCarRentalMain2 extends JFrame {
 
 		typeCb.addItem("SUV");
 		typeCb.addItem("Car");
+		typeCb.addItem("Pick-Up");
+		typeCb.addItem("Minivan");
 
 		typeCb.setSelectedItem(null);
 
@@ -255,22 +267,22 @@ public class DouglasCarRentalMain2 extends JFrame {
 		userJtable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
-				//TODO INSERT THE LOGIC TO SELECT THE ROW OF THE RESERVATION TO DELETE
-				
+
+				// TODO INSERT THE LOGIC TO SELECT THE ROW OF THE RESERVATION TO
+				// DELETE
+
 				try {
 
 					int row = userJtable.getSelectedRow();
 					getReservationId = (userJtable.getModel().getValueAt(row, 0).toString());
 
-					System.out.println(getReservationId);
+					//System.out.println(getReservationId);
 
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
 				}
 
-				
 			}
 		});
 		scrollPane_3.setViewportView(userJtable);
@@ -334,7 +346,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 					JOptionPane.showMessageDialog(null, "The boxes are empty!");
 				} else {
 					if (changePass.equals(changePass2)) {
-						
+
 						try {
 							Class.forName("com.mysql.jdbc.Driver");
 							java.sql.Connection conexion2 = DriverManager
@@ -349,7 +361,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 						} catch (Exception e1) {
 							JOptionPane.showMessageDialog(null, "Unsuccessful password change!");
 						}
-						
+
 					} else {
 						JOptionPane.showMessageDialog(null, "The entered passwords are not equal!");
 					}
@@ -422,25 +434,26 @@ public class DouglasCarRentalMain2 extends JFrame {
 		lblChangePersonalInformation.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblChangePersonalInformation.setBounds(477, 40, 295, 14);
 		panel_1.add(lblChangePersonalInformation);
-		
+
 		changePasswordTf = new JPasswordField();
 		changePasswordTf.setBounds(526, 198, 166, 20);
 		panel_1.add(changePasswordTf);
-		
+
 		changePasswordTf2 = new JPasswordField();
 		changePasswordTf2.setBounds(526, 234, 166, 20);
 		panel_1.add(changePasswordTf2);
-		
+
 		JButton deleteReservationBtn = new JButton("DELETE RESERVATION");
 		deleteReservationBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
 					java.sql.Connection conexion2 = DriverManager
 							.getConnection("jdbc:mysql://localhost:3306/douglasreservations", "root", "");
 
-					String query2 = "DELETE FROM reservations WHERE resnum ='" + Integer.parseInt(getReservationId) + "'";
+					String query2 = "DELETE FROM reservations WHERE resnum ='" + Integer.parseInt(getReservationId)
+							+ "'";
 					Statement stmt1 = conexion2.createStatement();
 					stmt1.executeUpdate(query2);
 
@@ -449,12 +462,12 @@ public class DouglasCarRentalMain2 extends JFrame {
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "Problems while deleting the reservation. Try again!");
 				}
-				
+
 			}
 		});
 		deleteReservationBtn.setBounds(854, 474, 166, 23);
 		panel_1.add(deleteReservationBtn);
-		
+
 		JLabel lblReservations = new JLabel("RESERVATIONS");
 		lblReservations.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblReservations.setBounds(10, 353, 295, 14);
@@ -496,31 +509,24 @@ public class DouglasCarRentalMain2 extends JFrame {
 
 				reservations = new ArrayList<>();
 
-				System.out.println(getMake + " " + getModel + " " + getYear + " " + getType + " " + dailyRate + " "
-						+ totalIns + " " + usId + " " + userName + " " + usEmail + " " + startDate + " " + endDate + " "
-						+ totalkms + " " + totalAddDriver + " " + totalRent);
+//				System.out.println(getMake + " " + getModel + " " + getYear + " " + getType + " " + dailyRate + " "
+//						+ totalIns + " " + usId + " " + userName + " " + usEmail + " " + startDate + " " + endDate + " "
+//						+ totalkms + " " + totalAddDriver + " " + totalRent);
 
 				Reservation reservation = new Reservation(getMake, getModel, getYear, getType, dailyRate, totalIns,
 						usId, userName, usEmail, startDate, endDate, totalkms, totalAddDriver, totalRent);
 				reservations.add(reservation);
 
-				for (Reservation b : reservations) {
-					System.out.println(b);
-				}
+//				for (Reservation b : reservations) {
+//					System.out.println(b);
+//				}
 
 			}
 		});
 		calculateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy"); // Get
-																			// the
-																			// amount
-																			// of
-																			// days
-																			// between
-																			// two
-																			// dates
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy"); 
 				startDate = sdf.format(outDc.getDate());
 				endDate = sdf.format(inDc.getDate());
 
@@ -584,10 +590,6 @@ public class DouglasCarRentalMain2 extends JFrame {
 				}
 				totalAddDriver = addDriverPrice * diff;
 				System.out.println("Additional Driver: " + "$" + totalAddDriver);
-
-				// TODO:System.out.println(insPrice+" "+startDate+" "+endDate+"
-				// day "+day1+" month "+month1+" year "+year1+" -second date-
-				// "+" day "+day2+" month "+month2+" year "+year2);
 
 				DecimalFormat df2 = new DecimalFormat(".##");
 
@@ -667,17 +669,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 				userNameLbl.setText(usName.toUpperCase() + " " + usLname.toUpperCase());
 				userBdatLbl.setText(usBday.toUpperCase());
 				userEmailLbl.setText(usEmail);
-				// userPaswordLbl.setText();
 
-				// DefaultListModel listmodel;
-				// listmodel = new DefaultListModel();
-				//
-				// listmodel.addElement("Name: " + usName + " " + usLname);
-				// listmodel.addElement("Id: " + usId);
-				// listmodel.addElement("Email: " + usEmail);
-				// listmodel.addElement("Password: " + usPass);
-				//
-				// userinfoJlist.setModel(listmodel);
 
 				// ----CREATE TABLE
 
@@ -689,52 +681,21 @@ public class DouglasCarRentalMain2 extends JFrame {
 		});
 
 	}
+	
 
 	public static void readList() {
 
-		vehicles = new ArrayList<>();
+		ServiceConnector SC = new ServiceConnector();
 
-		String filename = "CAR_DATA.csv";
-		File file = new File(filename);
+		SC.serviceStart();
+		vehicles = SC.getVehicleList();
 
-		try {
-			Scanner inputStream = new Scanner(file);
-			while (inputStream.hasNext()) {
-				String data = inputStream.next();
-				String[] values = data.split(",");
-				Vehicle vehicle = createVehicle(values);
-				vehicles.add(vehicle);
-
-				// System.out.println(values[2]+" "+values[3]);
-			}
-			inputStream.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// for (Vehicle b : vehicles) {
-		// System.out.println(b);
-		// }
-	}
-
-	private static Vehicle createVehicle(String[] metadata) {
-		String id = metadata[0];
-		String make = metadata[1];
-		String model = metadata[2];
-		String year = metadata[3];
-		String type = metadata[4];
-		String price = metadata[5];
-
-		// create and return book of this metadata
-		return new Vehicle(id, make, model, year, type, price);
 	}
 
 	public void printEmail(String receivedEmail) {
 
 		email = receivedEmail;
-		System.out.println(email);
+		//System.out.println(email);
 	}
 
 	private static void getUserInfo() {
@@ -761,7 +722,7 @@ public class DouglasCarRentalMain2 extends JFrame {
 				usPass = rs.getString("password");
 
 				// print the results
-				System.out.format("%s, %s, %s, %s, %s, %s\n", usId, usName, usLname, usBday, usEmail, usPass);
+				//System.out.format("%s, %s, %s, %s, %s, %s\n", usId, usName, usLname, usBday, usEmail, usPass);
 			}
 			st.close();
 
@@ -802,8 +763,8 @@ public class DouglasCarRentalMain2 extends JFrame {
 				resTotalPrice = rs.getString("totalPrice");
 
 				// print the results
-				System.out.format("%s, %s, %s, %s, %s, %s, %s, %s\n", resId, resMake, resModel, resYear, resType,
-						resOut, resIn, resTotalPrice);
+				//System.out.format("%s, %s, %s, %s, %s, %s, %s, %s\n", resId, resMake, resModel, resYear, resType,
+						//resOut, resIn, resTotalPrice);
 				setUserReservationsIntoArray();
 
 				// -- CREATE TABLE
@@ -849,9 +810,9 @@ public class DouglasCarRentalMain2 extends JFrame {
 				resTotPrice);
 		reservations2.add(reservation);
 
-		for (Reservation b : reservations2) {
-			System.out.println(b);
-		}
+//		for (Reservation b : reservations2) {
+//			System.out.println(b);
+//		}
 
 	}
 }
