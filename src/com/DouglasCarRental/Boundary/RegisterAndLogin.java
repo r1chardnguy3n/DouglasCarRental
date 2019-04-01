@@ -11,6 +11,8 @@ import java.awt.Font;
 import java.awt.Frame;
 
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.DriverManager;
@@ -24,6 +26,9 @@ import com.toedter.calendar.JDateChooser;
 
 
 import javax.swing.JPasswordField;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 
 public class RegisterAndLogin {
 
@@ -70,141 +75,188 @@ public class RegisterAndLogin {
 	 */
 	private void initialize() {
 		frmDouglas = new JFrame();
+		frmDouglas.getContentPane().setBackground(new Color(0, 51, 51));
 		frmDouglas.setTitle("DOUGLASCarRental");
-		frmDouglas.setBounds(100, 100, 551, 475);
+		frmDouglas.setBounds(100, 100, 675, 515);
 		frmDouglas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmDouglas.getContentPane().setLayout(null);
+		frmDouglas.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 535, 436);
+		tabbedPane.setForeground(new Color(255, 255, 255));
+		tabbedPane.setBackground(new Color(51, 51, 51));
+		tabbedPane.setFont(new Font("Serif", Font.PLAIN, 13));
 		frmDouglas.getContentPane().add(tabbedPane);
 		
 		JPanel Login = new JPanel();
+		Login.setBackground(new Color(204, 204, 204));
 		tabbedPane.addTab("LOG IN", null, Login, null);
-		Login.setLayout(null);
+		Login.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(51, 51, 51));
+		Login.add(panel);
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblDouglasCarRental = new JLabel("Douglas Car Rental");
+		lblDouglasCarRental.setForeground(new Color(46, 139, 87));
+		lblDouglasCarRental.setFont(new Font("Showcard Gothic", Font.BOLD, 26));
+		lblDouglasCarRental.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(lblDouglasCarRental, BorderLayout.CENTER);
 		
 		JPanel SubLogin = new JPanel();
-		SubLogin.setBounds(31, 30, 462, 345);
+		SubLogin.setBackground(new Color(255, 255, 255));
+		SubLogin.setBorder(BorderFactory.createEmptyBorder(0,28,10,28));
 		Login.add(SubLogin);
-		SubLogin.setLayout(null);
+		SubLogin.setLayout(new GridLayout(12, 0, 0, 0));
+		
+		JLabel label_7 = new JLabel("");
+		SubLogin.add(label_7);
 		
 		JLabel lblLogIn = new JLabel("LOG IN");
-		lblLogIn.setFont(new Font("Arial", Font.BOLD, 16));
-		lblLogIn.setBounds(201, 11, 59, 14);
+		lblLogIn.setForeground(new Color(51, 102, 51));
+		lblLogIn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogIn.setFont(new Font("Rockwell", Font.BOLD, 29));
 		SubLogin.add(lblLogIn);
 		
-		JLabel lblEmail = new JLabel("E-MAIL:");
-		lblEmail.setBounds(72, 110, 89, 14);
+		JLabel label_8 = new JLabel("");
+		SubLogin.add(label_8);
+		
+		JLabel lblEmail = new JLabel("E-MAIL");
+		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 15));
 		SubLogin.add(lblEmail);
 		
-		JLabel label = new JLabel("PASSWORD:");
-		label.setBounds(72, 170, 89, 14);
-		SubLogin.add(label);
+		textEmailLog = new JTextField();
+		textEmailLog.setText("roger@email.com");
+		textEmailLog.setColumns(10);
+		SubLogin.add(textEmailLog);
+		
+		JLabel lblPassword = new JLabel("PASSWORD");
+		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
+		SubLogin.add(lblPassword);
+		
+		textPassLogin = new JPasswordField();
+		textPassLogin.setEchoChar('*');
+		SubLogin.add(textPassLogin);
+		
+		JLabel label_9 = new JLabel("");
+		SubLogin.add(label_9);
 		
 		JButton btnLogin = new JButton("LOGIN");
+		btnLogin.setForeground(new Color(255, 255, 255));
+		btnLogin.setFont(new Font("Serif", Font.PLAIN, 18));
+		btnLogin.setBackground(new Color(51, 102, 51));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				login();
 			}
 		});
-		btnLogin.setBounds(72, 263, 89, 23);
 		SubLogin.add(btnLogin);
 		
+		JLabel label_10 = new JLabel("");
+		SubLogin.add(label_10);
+		
 		JButton btnExit = new JButton("EXIT");
+		btnExit.setForeground(new Color(255, 255, 255));
+		btnExit.setBackground(new Color(51, 102, 51));
+		btnExit.setFont(new Font("Serif", Font.PLAIN, 18));
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});
-		btnExit.setBounds(296, 263, 89, 23);
 		SubLogin.add(btnExit);
 		
-		textEmailLog = new JTextField();
-		textEmailLog.setText("roger@email.com");
-		textEmailLog.setColumns(10);
-		textEmailLog.setBounds(178, 98, 207, 26);
-		SubLogin.add(textEmailLog);
-		
-		textPassLogin = new JPasswordField();
-		textPassLogin.setEchoChar('*');
-		textPassLogin.setBounds(178, 158, 207, 26);
-		SubLogin.add(textPassLogin);
+		JLabel label_11 = new JLabel("");
+		SubLogin.add(label_11);
 		
 		JPanel Register = new JPanel();
+		Register.setBackground(new Color(153, 153, 153));
 		tabbedPane.addTab("REGISTER", null, Register, null);
-		Register.setLayout(null);
+		Register.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(51, 51, 51));
+		Register.add(panel_1);
 		
 		JPanel SubRegister = new JPanel();
-		SubRegister.setLayout(null);
-		SubRegister.setBounds(35, 30, 462, 345);
+		SubRegister.setBackground(new Color(255, 255, 255));
 		Register.add(SubRegister);
+		SubRegister.setLayout(new GridLayout(15, 4, 0, 0));
+		SubRegister.setBorder(BorderFactory.createEmptyBorder(10,28,10,28));
 		
 		JLabel label_1 = new JLabel("REGISTER");
-		label_1.setFont(new Font("Arial", Font.BOLD, 16));
-		label_1.setBounds(185, 11, 89, 14);
+		label_1.setForeground(new Color(51, 102, 51));
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setFont(new Font("Rockwell", Font.BOLD, 23));
 		SubRegister.add(label_1);
 		
 		JButton btnRegister = new JButton("REGISTER");
+		btnRegister.setBackground(new Color(51, 102, 51));
+		btnRegister.setForeground(new Color(255, 255, 255));
+		btnRegister.setFont(new Font("Serif", Font.PLAIN, 14));
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				register();
 			}
 		});
-		btnRegister.setBounds(84, 269, 100, 23);
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		SubRegister.add(lblName);
+		
+		textName = new JTextField();
+		textName.setColumns(10);
+		SubRegister.add(textName);
+		
+		JLabel lblLastName = new JLabel("Last Name");
+		lblLastName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		SubRegister.add(lblLastName);
+		
+		textLname = new JTextField();
+		textLname.setColumns(10);
+		SubRegister.add(textLname);
+		
+		JLabel lblBithday = new JLabel("Bithday");
+		lblBithday.setFont(new Font("Tahoma", Font.BOLD, 14));
+		SubRegister.add(lblBithday);
+		
+		textDOB = new JDateChooser();
+		textDOB.getCalendarButton().setBackground(new Color(102, 153, 153));
+		SubRegister.add(textDOB);
+		
+		JLabel lblEmail_1 = new JLabel("Email");
+		lblEmail_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		SubRegister.add(lblEmail_1);
+		
+		textEmail = new JTextField();
+		textEmail.setColumns(10);
+		SubRegister.add(textEmail);
+		
+		JLabel lblPassword_1 = new JLabel("Password");
+		lblPassword_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		SubRegister.add(lblPassword_1);
+		
+		textPass = new JPasswordField();
+		SubRegister.add(textPass);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		SubRegister.add(lblNewLabel_1);
 		SubRegister.add(btnRegister);
 		
 		JButton butExit = new JButton("EXIT");
+		butExit.setBackground(new Color(51, 102, 51));
+		butExit.setForeground(new Color(255, 255, 255));
+		butExit.setFont(new Font("Serif", Font.PLAIN, 14));
 		butExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		butExit.setBounds(299, 269, 89, 23);
+		
+		JLabel lblNewLabel = new JLabel("");
+		SubRegister.add(lblNewLabel);
 		SubRegister.add(butExit);
-		
-		JLabel label_2 = new JLabel("Name:");
-		label_2.setBounds(76, 59, 54, 20);
-		SubRegister.add(label_2);
-		
-		textName = new JTextField();
-		textName.setColumns(10);
-		textName.setBounds(160, 56, 230, 26);
-		SubRegister.add(textName);
-		
-		JLabel label_3 = new JLabel("Last Name:");
-		label_3.setBounds(76, 95, 80, 20);
-		SubRegister.add(label_3);
-		
-		textLname = new JTextField();
-		textLname.setColumns(10);
-		textLname.setBounds(160, 92, 230, 26);
-		SubRegister.add(textLname);
-		
-		JLabel label_4 = new JLabel("Bithday:");
-		label_4.setBounds(76, 133, 71, 20);
-		SubRegister.add(label_4);
-		
-		textDOB = new JDateChooser();
-		textDOB.setBounds(160, 129, 230, 26);
-		SubRegister.add(textDOB);
-		
-		JLabel label_5 = new JLabel("Email:");
-		label_5.setBounds(76, 170, 54, 20);
-		SubRegister.add(label_5);
-		
-		textEmail = new JTextField();
-		textEmail.setColumns(10);
-		textEmail.setBounds(160, 167, 230, 26);
-		SubRegister.add(textEmail);
-		
-		JLabel label_6 = new JLabel("Password:");
-		label_6.setBounds(76, 211, 80, 20);
-		SubRegister.add(label_6);
-		
-		textPass = new JPasswordField();
-		textPass.setBounds(160, 208, 230, 26);
-		SubRegister.add(textPass);
 	}
 	
 protected void login() {
